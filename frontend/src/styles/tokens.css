@@ -1,0 +1,63 @@
+/**
+ * JU_FIX design tokens.
+ *
+ * Every colour, font size and control dimension in the approved UI design
+ * document is declared once here. Components must reference these variables
+ * instead of repeating literal values (Coding Standard 3.1, DRY).
+ */
+
+:root {
+  /* Colour palette */
+  --ju-primary: #0f766e;
+  --ju-primary-hover: #115e59;
+  --ju-blue: #1e3a8a;
+  --ju-bg: #f8fafc;
+  --ju-surface: #ffffff;
+  --ju-text: #0f172a;
+  --ju-text-secondary: #475569;
+  --ju-border: #cbd5e1;
+  --ju-success: #15803d;
+  --ju-warning: #b45309;
+  --ju-error: #b91c1c;
+  --ju-info: #1d4ed8;
+
+  /* Soft status backgrounds used by chips and banners */
+  --ju-success-soft: #dcfce7;
+  --ju-warning-soft: #fef3c7;
+  --ju-error-soft: #fee2e2;
+  --ju-info-soft: #dbeafe;
+
+  /* Typography */
+  --ju-font: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ju-page-title: 32px;
+  --ju-section-title: 24px;
+  --ju-card-title: 18px;
+  --ju-body: 16px;
+  --ju-label: 14px;
+  --ju-supporting: 14px;
+  --ju-button: 15px;
+  --ju-table-header: 13px;
+  --ju-chip: 12px;
+
+  /* Control dimensions */
+  --ju-input-height: 48px;
+  --ju-btn-primary-height: 48px;
+  --ju-btn-secondary-height: 44px;
+  --ju-radius: 8px;
+  --ju-card-radius: 12px;
+  --ju-touch-target: 44px;
+  --ju-row-height: 52px;
+  --ju-sidebar-width: 240px;
+  --ju-topbar-height: 64px;
+
+  /* Spacing scale */
+  --ju-space-1: 4px;
+  --ju-space-2: 8px;
+  --ju-space-3: 12px;
+  --ju-space-4: 16px;
+  --ju-space-5: 24px;
+  --ju-space-6: 32px;
+
+  --ju-shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --ju-shadow-raised: 0 4px 12px rgba(15, 23, 42, 0.1);
+}

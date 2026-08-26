@@ -1,0 +1,35 @@
+{
+  "name": "ju-fix-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "React view layer for the JU_FIX Medical Centre Automation System.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .js,.jsx",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\""
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "jsdom": "^25.0.0",
+    "prettier": "^3.3.3",
+    "vite": "^5.4.6",
+    "vitest": "^2.1.1"
+  }
+}

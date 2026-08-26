@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local database and secrets
+*.db
+*.sqlite3
+.env
+backend/.env
+
+# Node
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docs build output
+site/

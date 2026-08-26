@@ -1,0 +1,31 @@
+site_name: JU_FIX Documentation
+site_description: Jahangirnagar University Medical Centre Automation System
+theme:
+  name: material
+  palette:
+    primary: teal
+  features:
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Decisions:
+      - ADR-001 Backend Stack: decisions/adr-001-backend-stack.md
+      - ADR-002 Feature Auto-Registration: decisions/adr-002-feature-auto-registration.md
+  - Setup Guide: setup.md
+  - API Reference: api.md
+  - Testing: testing.md
+  - Features:
+      - Accounts and Authentication: features/authentication.md
+      - Appointment Booking: features/appointments.md
+      - Electronic Health Records: features/medical-records.md
+      - Digital Prescriptions: features/prescriptions.md
+      - Medical Certificates: features/certificates.md
+      - Admin Dashboard and Reporting: features/admin.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - fenced_code
