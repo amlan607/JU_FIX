@@ -1,0 +1,537 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ju-font);
+  font-size: var(--ju-body);
+  color: var(--ju-text);
+  background: var(--ju-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: var(--ju-page-title);
+  font-weight: 700;
+  margin: 0 0 var(--ju-space-2);
+}
+
+h2 {
+  font-size: var(--ju-section-title);
+  font-weight: 700;
+  margin: 0 0 var(--ju-space-3);
+}
+
+h3 {
+  font-size: var(--ju-card-title);
+  font-weight: 600;
+  margin: 0 0 var(--ju-space-2);
+}
+
+a {
+  color: var(--ju-primary);
+}
+
+/* ---------- Layout shell ---------- */
+
+.ju-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.ju-sidebar {
+  width: var(--ju-sidebar-width);
+  flex-shrink: 0;
+  background: var(--ju-text);
+  color: #e2e8f0;
+  padding: var(--ju-space-5) 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ju-sidebar__brand {
+  padding: 0 var(--ju-space-5) var(--ju-space-5);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.ju-sidebar__brand small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #94a3b8;
+  letter-spacing: 0;
+}
+
+.ju-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ju-sidebar__link {
+  display: block;
+  padding: var(--ju-space-3) var(--ju-space-5);
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: var(--ju-label);
+  font-weight: 500;
+  min-height: var(--ju-touch-target);
+  line-height: 20px;
+}
+
+.ju-sidebar__link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.ju-sidebar__link--active {
+  background: var(--ju-primary);
+  color: #ffffff;
+}
+
+.ju-sidebar__user {
+  padding: var(--ju-space-4) var(--ju-space-5) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+}
+
+.ju-sidebar__user strong {
+  display: block;
+  color: #ffffff;
+}
+
+.ju-sidebar__user span {
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+.ju-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ju-topbar {
+  height: var(--ju-topbar-height);
+  background: var(--ju-surface);
+  border-bottom: 1px solid var(--ju-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ju-space-5);
+  gap: var(--ju-space-4);
+}
+
+.ju-topbar__title {
+  font-size: var(--ju-label);
+  color: var(--ju-text-secondary);
+  font-weight: 600;
+}
+
+.ju-content {
+  padding: var(--ju-space-5);
+  flex: 1;
+}
+
+.ju-page-header {
+  margin-bottom: var(--ju-space-5);
+}
+
+.ju-page-header p {
+  margin: 0;
+  color: var(--ju-text-secondary);
+  font-size: var(--ju-supporting);
+}
+
+/* ---------- Cards ---------- */
+
+.ju-card {
+  background: var(--ju-surface);
+  border: 1px solid var(--ju-border);
+  border-radius: var(--ju-card-radius);
+  padding: var(--ju-space-5);
+  box-shadow: var(--ju-shadow-card);
+}
+
+.ju-card + .ju-card {
+  margin-top: var(--ju-space-4);
+}
+
+.ju-card__title {
+  font-size: var(--ju-card-title);
+  font-weight: 600;
+  margin: 0 0 var(--ju-space-1);
+}
+
+.ju-card__subtitle {
+  font-size: var(--ju-supporting);
+  color: var(--ju-text-secondary);
+  margin: 0 0 var(--ju-space-4);
+}
+
+.ju-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--ju-space-4);
+  margin-bottom: var(--ju-space-5);
+}
+
+.ju-kpi {
+  background: var(--ju-surface);
+  border: 1px solid var(--ju-border);
+  border-radius: var(--ju-card-radius);
+  padding: var(--ju-space-4);
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ju-kpi__label {
+  font-size: var(--ju-chip);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ju-text-secondary);
+}
+
+.ju-kpi__value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ju-kpi__hint {
+  font-size: var(--ju-chip);
+  color: var(--ju-text-secondary);
+}
+
+/* ---------- Forms ---------- */
+
+.ju-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--ju-space-4);
+}
+
+.ju-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ju-space-1);
+}
+
+.ju-field__label {
+  font-size: var(--ju-label);
+  font-weight: 600;
+}
+
+.ju-field__required {
+  color: var(--ju-error);
+  margin-left: 2px;
+}
+
+.ju-field__control {
+  height: var(--ju-input-height);
+  border: 1px solid var(--ju-border);
+  border-radius: var(--ju-radius);
+  padding: 0 var(--ju-space-3);
+  font-size: var(--ju-body);
+  font-family: var(--ju-font);
+  background: var(--ju-surface);
+  color: var(--ju-text);
+  width: 100%;
+}
+
+textarea.ju-field__control {
+  height: auto;
+  min-height: 96px;
+  padding: var(--ju-space-3);
+  resize: vertical;
+}
+
+.ju-field__control:focus {
+  outline: 2px solid var(--ju-primary);
+  outline-offset: 1px;
+  border-color: var(--ju-primary);
+}
+
+.ju-field__control:disabled {
+  background: #f1f5f9;
+  color: var(--ju-text-secondary);
+  cursor: not-allowed;
+}
+
+.ju-field__control--error {
+  border-color: var(--ju-error);
+}
+
+.ju-field__help {
+  font-size: var(--ju-chip);
+  color: var(--ju-text-secondary);
+}
+
+.ju-field__error {
+  font-size: var(--ju-chip);
+  font-weight: 600;
+  color: var(--ju-error);
+}
+
+.ju-form-actions {
+  display: flex;
+  gap: var(--ju-space-3);
+  justify-content: flex-end;
+  margin-top: var(--ju-space-5);
+  flex-wrap: wrap;
+}
+
+/* ---------- Buttons ---------- */
+
+.ju-btn {
+  font-family: var(--ju-font);
+  font-size: var(--ju-button);
+  font-weight: 600;
+  border-radius: var(--ju-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  min-height: var(--ju-btn-secondary-height);
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ju-space-2);
+}
+
+.ju-btn:focus-visible {
+  outline: 2px solid var(--ju-blue);
+  outline-offset: 2px;
+}
+
+.ju-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ju-btn--primary {
+  background: var(--ju-primary);
+  color: #ffffff;
+  min-height: var(--ju-btn-primary-height);
+  padding: 0 24px;
+}
+
+.ju-btn--primary:hover:not(:disabled) {
+  background: var(--ju-primary-hover);
+}
+
+.ju-btn--secondary {
+  background: var(--ju-surface);
+  color: var(--ju-text);
+  border-color: var(--ju-border);
+}
+
+.ju-btn--secondary:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.ju-btn--danger {
+  background: var(--ju-error);
+  color: #ffffff;
+}
+
+.ju-btn--danger:hover:not(:disabled) {
+  background: #991b1b;
+}
+
+.ju-btn--ghost {
+  background: transparent;
+  color: var(--ju-primary);
+  padding: 0 var(--ju-space-2);
+}
+
+/* ---------- Tables ---------- */
+
+.ju-table-wrap {
+  overflow-x: auto;
+}
+
+.ju-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ju-supporting);
+}
+
+.ju-table th {
+  text-align: left;
+  font-size: var(--ju-table-header);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ju-text-secondary);
+  padding: var(--ju-space-3);
+  border-bottom: 1px solid var(--ju-border);
+  white-space: nowrap;
+}
+
+.ju-table td {
+  padding: var(--ju-space-3);
+  border-bottom: 1px solid #e2e8f0;
+  min-height: var(--ju-row-height);
+}
+
+.ju-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ---------- Status chips ---------- */
+
+.ju-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 var(--ju-space-3);
+  border-radius: 999px;
+  font-size: var(--ju-chip);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ju-chip--success {
+  background: var(--ju-success-soft);
+  color: var(--ju-success);
+}
+.ju-chip--warning {
+  background: var(--ju-warning-soft);
+  color: var(--ju-warning);
+}
+.ju-chip--error {
+  background: var(--ju-error-soft);
+  color: var(--ju-error);
+}
+.ju-chip--info {
+  background: var(--ju-info-soft);
+  color: var(--ju-info);
+}
+.ju-chip--neutral {
+  background: #f1f5f9;
+  color: var(--ju-text-secondary);
+}
+
+/* ---------- Feedback states ---------- */
+
+.ju-alert {
+  border-radius: var(--ju-radius);
+  padding: var(--ju-space-3) var(--ju-space-4);
+  font-size: var(--ju-supporting);
+  border: 1px solid transparent;
+  margin-bottom: var(--ju-space-4);
+}
+
+.ju-alert--error {
+  background: var(--ju-error-soft);
+  color: var(--ju-error);
+  border-color: #fecaca;
+}
+.ju-alert--success {
+  background: var(--ju-success-soft);
+  color: var(--ju-success);
+  border-color: #bbf7d0;
+}
+.ju-alert--info {
+  background: var(--ju-info-soft);
+  color: var(--ju-info);
+  border-color: #bfdbfe;
+}
+.ju-alert--warning {
+  background: var(--ju-warning-soft);
+  color: var(--ju-warning);
+  border-color: #fde68a;
+}
+
+.ju-state {
+  text-align: center;
+  padding: var(--ju-space-6) var(--ju-space-4);
+  color: var(--ju-text-secondary);
+}
+
+.ju-state__title {
+  font-size: var(--ju-card-title);
+  font-weight: 600;
+  color: var(--ju-text);
+  margin-bottom: var(--ju-space-2);
+}
+
+/* ---------- Auth layout ---------- */
+
+.ju-auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ju-space-5);
+  background: var(--ju-bg);
+}
+
+.ju-auth__card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--ju-surface);
+  border: 1px solid var(--ju-border);
+  border-radius: var(--ju-card-radius);
+  padding: var(--ju-space-6);
+  box-shadow: var(--ju-shadow-raised);
+}
+
+.ju-auth__brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ju-primary);
+  margin-bottom: var(--ju-space-1);
+}
+
+.ju-auth__footer {
+  margin-top: var(--ju-space-5);
+  font-size: var(--ju-supporting);
+  text-align: center;
+  color: var(--ju-text-secondary);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .ju-shell {
+    flex-direction: column;
+  }
+  .ju-sidebar {
+    width: 100%;
+    padding: var(--ju-space-3) 0;
+  }
+  .ju-sidebar__nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .ju-sidebar__link {
+    white-space: nowrap;
+  }
+  .ju-content {
+    padding: var(--ju-space-4);
+  }
+  .ju-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .ju-form-actions {
+    flex-direction: column-reverse;
+  }
+  .ju-form-actions .ju-btn {
+    width: 100%;
+  }
+}
