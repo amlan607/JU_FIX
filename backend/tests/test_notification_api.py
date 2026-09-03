@@ -49,3 +49,31 @@ def test_only_admin_can_run_reminder_sweep(client, db_session):
     response = client.post("/api/notifications/run-reminders", headers=auth_header(client, admin.university_id))
     assert response.status_code == 200
     assert "appointment_reminders_created" in response.json()["data"]
+
+
+@pytest.mark.api
+def test_preferences_can_be_read_and_updated(client, db_session):
+    user = make_user(db_session)
+    headers = auth_header(client, user.university_id)
+    listed = client.get("/api/notifications/preferences", headers=headers)
+    assert listed.status_code == 200
+    assert len(listed.json()["data"]) == 8
+    updated = client.patch(
+        "/api/notifications/preferences",
+        json={"category": "appointment_reminder", "in_app_enabled": False},
+        headers=headers,
+    )
+    assert updated.status_code == 200
+    reminder = next(item for item in updated.json()["data"] if item["category"] == "appointment_reminder")
+    assert reminder["in_app_enabled"] is False
+
+
+@pytest.mark.api
+def test_mandatory_preference_cannot_be_disabled(client, db_session):
+    user = make_user(db_session)
+    response = client.patch(
+        "/api/notifications/preferences",
+        json={"category": "security", "in_app_enabled": False},
+        headers=auth_header(client, user.university_id),
+    )
+    assert response.status_code == 400

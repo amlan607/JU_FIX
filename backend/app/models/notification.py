@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -36,6 +36,24 @@ class Notification(Base):
     def __repr__(self) -> str:
         """Return a debug representation without message content."""
         return f"<Notification id={self.id} user={self.user_id} category={self.category}>"
+
+
+class NotificationPreference(Base):
+    """A user's in-app and email settings for one notification category."""
+
+    __tablename__ = "notification_preferences"
+    __table_args__ = (
+        UniqueConstraint("user_id", "category", name="uq_preference_user_category"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    category: Mapped[str] = mapped_column(String(40), nullable=False)
+    in_app_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    email_enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utc_now, onupdate=utc_now
+    )
 
 
 class ReminderDispatch(Base):

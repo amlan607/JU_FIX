@@ -8,7 +8,7 @@ from app.core.database import get_db
 from app.core.deps import get_current_user, require_roles
 from app.core.responses import success_response
 from app.models.user import User
-from app.schemas.notification import NotificationResponse
+from app.schemas.notification import NotificationResponse, UpdatePreferenceRequest
 from app.services import notification_service
 
 router = APIRouter(prefix="/notifications", tags=["Notifications and Reminders"])
@@ -49,6 +49,28 @@ def run_reminders(
 ) -> dict:
     """Run the appointment and medicine reminder sweep."""
     return success_response(notification_service.run_all_reminders(db))
+
+
+@router.get("/preferences")
+def list_preferences(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+) -> dict:
+    """Return the signed-in user's notification preferences."""
+    return success_response(notification_service.list_preferences(db, current_user))
+
+
+@router.patch("/preferences")
+def update_preference(
+    payload: UpdatePreferenceRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    """Change one notification category preference."""
+    return success_response(
+        notification_service.update_preference(
+            db, current_user, payload.category, payload.in_app_enabled, payload.email_enabled
+        )
+    )
 
 
 @router.patch("/{notification_id}/read")

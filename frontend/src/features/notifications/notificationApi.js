@@ -11,3 +11,11 @@ export function markRead(notificationId) {
 export function markAllRead() {
   return api.patch('/notifications/read-all');
 }
+
+export function fetchPreferences() {
+  return api.get('/notifications/preferences');
+}
+
+export function updatePreference(payload) {
+  return api.patch('/notifications/preferences', payload);
+}

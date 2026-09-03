@@ -9,19 +9,19 @@ from sqlalchemy.orm import Session
 from app.core.constants import AppointmentStatus, PrescriptionStatus
 from app.core.errors import NotFoundError, PermissionDeniedError, ValidationError
 from app.models.appointment import Appointment
-from app.models.notification import Notification, ReminderDispatch
+from app.models.notification import Notification, NotificationPreference, ReminderDispatch
 from app.models.prescription import Prescription
 from app.models.user import User
 
 CATEGORIES = {
-    "appointment_reminder",
-    "appointment_update",
-    "medicine_reminder",
-    "queue_update",
-    "record_update",
-    "certificate_update",
-    "emergency",
-    "security",
+    "appointment_reminder": {"label": "Appointment Reminders", "description": "Before a scheduled visit.", "can_disable": True},
+    "appointment_update": {"label": "Appointment Updates", "description": "New bookings, confirmations and cancellations.", "can_disable": True},
+    "medicine_reminder": {"label": "Medicine Reminders", "description": "While a prescription course is active.", "can_disable": True},
+    "queue_update": {"label": "Queue Alerts", "description": "When your token is next or being served.", "can_disable": True},
+    "record_update": {"label": "Medical Record Updates", "description": "When a doctor changes your record.", "can_disable": True},
+    "certificate_update": {"label": "Certificate Decisions", "description": "When a certificate request is decided.", "can_disable": True},
+    "emergency": {"label": "Emergency Alerts", "description": "Emergency requests requiring action.", "can_disable": False},
+    "security": {"label": "Account Security", "description": "Sign-ins and account changes.", "can_disable": False},
 }
 APPOINTMENT_REMINDER_OFFSETS = (("24h", 24), ("1h", 1))
 
@@ -37,6 +37,24 @@ def validate_category(category: str) -> str:
     return category
 
 
+def is_enabled(db: Session, user_id: int, category: str, channel: str = "in_app") -> bool:
+    """Return whether a category may be delivered to the user."""
+    metadata = CATEGORIES[category]
+    if not metadata["can_disable"]:
+        return True
+    preference = (
+        db.query(NotificationPreference)
+        .filter(
+            NotificationPreference.user_id == user_id,
+            NotificationPreference.category == category,
+        )
+        .first()
+    )
+    if preference is None:
+        return True
+    return preference.email_enabled if channel == "email" else preference.in_app_enabled
+
+
 def notify(
     db: Session,
     *,
@@ -47,9 +65,11 @@ def notify(
     entity_type: str | None = None,
     entity_id: int | None = None,
     commit: bool = True,
-) -> Notification:
+) -> Notification | None:
     """Create one stored notification through the shared notification gateway."""
     validate_category(category)
+    if not is_enabled(db, user_id, category):
+        return None
     notification = Notification(
         user_id=user_id,
         category=category,
@@ -121,6 +141,59 @@ def mark_all_read(db: Session, user: User) -> int:
         notification.read_at = now
     db.commit()
     return len(unread)
+
+
+def list_preferences(db: Session, user: User) -> list[dict]:
+    """Return all categories, applying enabled defaults when no row exists."""
+    stored = {
+        row.category: row
+        for row in db.query(NotificationPreference)
+        .filter(NotificationPreference.user_id == user.id)
+        .all()
+    }
+    return [
+        {
+            "category": category,
+            "label": metadata["label"],
+            "description": metadata["description"],
+            "in_app_enabled": True if not metadata["can_disable"] else (stored[category].in_app_enabled if category in stored else True),
+            "email_enabled": True if not metadata["can_disable"] else (stored[category].email_enabled if category in stored else True),
+            "can_disable": metadata["can_disable"],
+        }
+        for category, metadata in CATEGORIES.items()
+    ]
+
+
+def update_preference(
+    db: Session,
+    user: User,
+    category: str,
+    in_app_enabled: bool | None,
+    email_enabled: bool | None,
+) -> list[dict]:
+    """Update one optional category preference."""
+    validate_category(category)
+    if in_app_enabled is None and email_enabled is None:
+        raise ValidationError("Provide at least one channel to change.")
+    if not CATEGORIES[category]["can_disable"]:
+        raise ValidationError(f"{CATEGORIES[category]['label']} cannot be switched off.")
+    preference = (
+        db.query(NotificationPreference)
+        .filter(
+            NotificationPreference.user_id == user.id,
+            NotificationPreference.category == category,
+        )
+        .first()
+    )
+    if preference is None:
+        preference = NotificationPreference(user_id=user.id, category=category)
+        db.add(preference)
+    if in_app_enabled is not None:
+        preference.in_app_enabled = in_app_enabled
+    if email_enabled is not None:
+        preference.email_enabled = email_enabled
+    db.commit()
+    return list_preferences(db, user)
 
 
 def _record_dispatch(db: Session, entity_type: str, entity_id: int, label: str) -> bool:

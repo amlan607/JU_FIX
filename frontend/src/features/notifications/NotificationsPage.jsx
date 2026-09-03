@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Alert, EmptyState, ErrorState, LoadingState } from '../../components/Feedback';
 import StatusChip from '../../components/StatusChip';
@@ -71,7 +72,10 @@ export default function NotificationsPage() {
             <button type="button" className={`ju-btn ${unreadOnly ? 'ju-btn--secondary' : 'ju-btn--primary'}`} onClick={() => setUnreadOnly(false)}>All</button>
             <button type="button" className={`ju-btn ${unreadOnly ? 'ju-btn--primary' : 'ju-btn--secondary'}`} onClick={() => setUnreadOnly(true)}>Unread</button>
           </div>
-          <button type="button" className="ju-btn ju-btn--secondary" onClick={clearAll} disabled={unreadCount === 0}>Mark All Read</button>
+          <div style={{ display: 'flex', gap: 'var(--ju-space-2)' }}>
+            <Link to="/notifications/preferences" className="ju-btn ju-btn--secondary">Preferences</Link>
+            <button type="button" className="ju-btn ju-btn--secondary" onClick={clearAll} disabled={unreadCount === 0}>Mark All Read</button>
+          </div>
         </div>
         {notifications.length === 0 ? (
           <EmptyState title={unreadOnly ? 'Nothing unread' : 'No notifications yet'} hint="Appointment reminders and updates will appear here." />

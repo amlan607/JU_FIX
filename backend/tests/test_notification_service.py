@@ -6,7 +6,7 @@ import pytest
 
 from app.core.constants import AppointmentStatus, PrescriptionStatus
 from app.models.appointment import Appointment
-from app.models.notification import Notification
+from app.models.notification import Notification, NotificationPreference
 from app.models.prescription import Prescription, PrescriptionItem
 from app.services import notification_service as service
 from tests.conftest import make_doctor, make_user
@@ -122,3 +122,37 @@ def test_notification_list_is_scoped_and_readable(db_session):
     assert len(service.list_for_user(db_session, other)["notifications"]) == 0
     service.mark_read(db_session, notification.id, user)
     assert service.list_for_user(db_session, user)["unread_count"] == 0
+
+
+@pytest.mark.unit
+def test_optional_category_can_be_disabled(db_session):
+    user = make_user(db_session)
+    service.update_preference(db_session, user, "appointment_reminder", False, None)
+    assert service.notify(
+        db_session, user_id=user.id, category="appointment_reminder", title="Reminder", body="Soon."
+    ) is None
+
+
+@pytest.mark.unit
+def test_mandatory_category_ignores_stored_opt_out(db_session):
+    user = make_user(db_session)
+    db_session.add(NotificationPreference(user_id=user.id, category="security", in_app_enabled=False))
+    db_session.commit()
+    assert service.notify(
+        db_session, user_id=user.id, category="security", title="Sign in", body="Account accessed."
+    ) is not None
+
+
+@pytest.mark.unit
+def test_preferences_default_enabled_and_mandatory_categories_locked(db_session):
+    user = make_user(db_session)
+    preferences = service.list_preferences(db_session, user)
+    assert all(item["in_app_enabled"] for item in preferences)
+    assert all(not item["can_disable"] for item in preferences if item["category"] in {"security", "emergency"})
+
+
+@pytest.mark.unit
+def test_mandatory_preference_update_is_refused(db_session):
+    user = make_user(db_session)
+    with pytest.raises(Exception, match="cannot be switched off"):
+        service.update_preference(db_session, user, "emergency", False, None)
