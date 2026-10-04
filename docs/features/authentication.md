@@ -66,5 +66,5 @@ no mail server. In production those fields are `None` and the token is emailed.
 | Schemas | `backend/app/schemas/auth.py` |
 | Service | `backend/app/services/auth_service.py` |
 | Controller | `backend/app/controllers/auth_controller.py` |
-| Tests | `backend/tests/test_auth_service.py`, `test_auth_api.py` |
+| Tests | `backend/tests/test_auth.py` (five workflow tests), `frontend/src/features/auth/LoginPage.test.jsx` (one component test) |
 | Screens | `frontend/src/features/auth/` |
