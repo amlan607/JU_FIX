@@ -1,14 +1,8 @@
-/**
- * Route declarations for digital prescription management (FR-D1, FR-D3).
- *
- * Owner: Md Sher Ali (364).
- */
-import MyPrescriptionsPage from './MyPrescriptionsPage';
-import PharmacyQueuePage from './PharmacyQueuePage';
-import PrescriptionEditorPage from './PrescriptionEditorPage';
+/** Route declarations for digital prescriptions. Owner: Md Sher Ali (364). */
+import { DoctorPrescriptionsPage, MyPrescriptionsPage, PharmacyPage } from './PrescriptionPages';
 
 export default [
   { path: '/prescriptions', element: <MyPrescriptionsPage />, roles: ['student', 'faculty'] },
-  { path: '/doctor/prescriptions', element: <PrescriptionEditorPage />, roles: ['doctor'] },
-  { path: '/pharmacy/prescriptions', element: <PharmacyQueuePage />, roles: ['pharmacist'] },
+  { path: '/doctor/prescriptions', element: <DoctorPrescriptionsPage />, roles: ['doctor'] },
+  { path: '/pharmacy/prescriptions', element: <PharmacyPage />, roles: ['pharmacist'] },
 ];
