@@ -70,9 +70,8 @@ contact the medical centre rather than failing silently.
 
 | Layer | Path |
 |---|---|
-| Model | `backend/app/models/appointment.py` |
 | Schemas | `backend/app/schemas/appointment.py` |
 | Service | `backend/app/services/appointment_service.py` |
 | Controller | `backend/app/controllers/appointment_controller.py` |
-| Tests | `backend/tests/test_appointment_service.py`, `test_appointment_api.py` |
+| Tests | `backend/tests/test_appointments.py`|
 | Screens | `frontend/src/features/appointments/` |
